@@ -13,6 +13,9 @@ type Pusher struct{
 	poster Poster
 }
 
+func CreatePusher() Pusher{
+	return Pusher{poster : PusherHttpEndpoint{}}
+}
 //error if keys are not set
 //  when? On instantiate or on Trigger()
 
@@ -25,11 +28,11 @@ type Poster interface{
 	post(body []byte)(data *string, err error)
 }
 
-type PusherEndpoint struct{
+type PusherHttpEndpoint struct{
 	url string
 }
 
-func (this PusherEndpoint) post(data []byte)(*string, error){
+func (this PusherHttpEndpoint) post(data []byte)(*string, error){
 	httpclient := &http.Client{}
 	req, err := http.NewRequest("POST", this.url, bytes.NewBuffer(data))
 	resp, err := httpclient.Do(req)
