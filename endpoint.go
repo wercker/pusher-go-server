@@ -1,22 +1,20 @@
 package gopusher
 
 import (
+	"io/ioutil"
 	"net/http"
 	"strings"
-	"io/ioutil"
 )
 
+// domain: 'api.pusherapp.com',
+//    scheme: 'http',
+//    port: 80
 
- // domain: 'api.pusherapp.com',
- //    scheme: 'http',
- //    port: 80
-
-type endpointer interface{
+type endpointer interface {
 	post(path string, body []byte) (data string, statusCode int, err error)
 }
 
-type endpoint struct{
-
+type endpoint struct {
 }
 
 func (e *endpoint) post(path string, body []byte) (data string, statusCode int, err error) {
@@ -36,7 +34,6 @@ func (e *endpoint) post(path string, body []byte) (data string, statusCode int, 
 	return string(responseBody), res.StatusCode, nil
 }
 
-func newEndpoint() endpointer{
+func newEndpoint() endpointer {
 	return &endpoint{}
 }
-

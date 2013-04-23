@@ -1,8 +1,8 @@
 package gopusher
 
 import (
-	"testing"
 	"strings"
+	"testing"
 )
 
 var (
@@ -17,10 +17,9 @@ var (
 	}
 )
 
-type mockEndpoint struct{
+type mockEndpoint struct {
 	postPath string
 	postBody []byte
-
 }
 
 func (this *mockEndpoint) post(path string, body []byte) (data string, statusCode int, err error) {
@@ -29,7 +28,6 @@ func (this *mockEndpoint) post(path string, body []byte) (data string, statusCod
 	resultBody := "{\"ok\" : true}"
 	return resultBody, 0, nil
 }
-
 
 func Test_New_CreateNewPusher(t *testing.T) {
 	pusher := New("id", "key", "secret")
@@ -41,24 +39,24 @@ func Test_New_CreateNewPusher(t *testing.T) {
 // id, key and secret should be set
 // pusher options:  port and https (restclient??)
 
-func Test_Trigger_ShouldPostRequestToServer(t *testing.T){
+func Test_Trigger_ShouldPostRequestToServer(t *testing.T) {
 	mockEndpoint := &mockEndpoint{}
 	pusher := pusher{"id", "key", "secret", mockEndpoint}
 
 	body, _, _ := pusher.Trigger([]string{"channel"}, "event", someData, nil)
 
-	if(body == ""){
+	if body == "" {
 		t.Error("Body should be filled")
 	}
 }
 
-func Test_Trigger_ShouldPostCorrectlyFormattedRequestToServer(t *testing.T){
+func Test_Trigger_ShouldPostCorrectlyFormattedRequestToServer(t *testing.T) {
 	mockEndpoint := &mockEndpoint{}
 	pusher := pusher{"id", "key", "secret", mockEndpoint}
 
 	pusher.Trigger([]string{"channel"}, "event", someData, nil)
 
-	if !strings.HasPrefix(mockEndpoint.postPath, "/apps/id/events"){
+	if !strings.HasPrefix(mockEndpoint.postPath, "/apps/id/events") {
 		t.Error("path not set correctly ", mockEndpoint.postPath)
 	}
 	expectedBody := "{\"channels\":[\"channel\"],\"name\":\"event\",\"data\":\"{\\\"Name\\\":\\\"Pieter Joost van de Sande\\\",\\\"Company\\\":\\\"Wercker\\\"}\"}"
@@ -67,11 +65,8 @@ func Test_Trigger_ShouldPostCorrectlyFormattedRequestToServer(t *testing.T){
 	}
 }
 
-
 //error on no name and/or data
 
 // check default https
 //filter null json
 // one channel: use channel, else use channels
-
-

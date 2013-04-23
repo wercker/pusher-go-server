@@ -1,28 +1,27 @@
 package gopusher
 
 import (
-	"testing"
-	"os"
 	"fmt"
+	"os"
+	"testing"
 )
 
-
-type config struct{
-	appId string
-	appKey string
+type config struct {
+	appId     string
+	appKey    string
 	secretKey string
 }
 
 func Test_New_CreateNewPusher2(t *testing.T) {
-	if os.Getenv("INTEGRATION") != "true"{
+	if os.Getenv("INTEGRATION") != "true" {
 		return
 	}
 
-	c := config{os.Getenv("APPID"),os.Getenv("APPKEY"),os.Getenv("SECRETKEY")}
+	c := config{os.Getenv("APPID"), os.Getenv("APPKEY"), os.Getenv("SECRETKEY")}
 
 	pusher := New(c.appId, c.appKey, c.secretKey)
 
-	result, statusCode, err := pusher.Trigger([]string{"test"}, "event", someData , nil)
+	result, statusCode, err := pusher.Trigger([]string{"test"}, "event", someData, nil)
 
 	fmt.Println("result", result)
 	fmt.Println("statusCode", statusCode)
